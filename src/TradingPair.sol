@@ -26,6 +26,9 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
     uint256 private _reserveB = 0;
     uint256 private _k; //this value represents the ratio between the two token reserves
 
+    uint256 public constant _feeNumerator = 5;
+    uint256 public constant _feeDenominator = 1000;
+
     /*
     constructor takes as arguments two distinct ERC20 contract addresses, which one is tokenA
     or tokenB makes no difference at all, it's just for distinction
@@ -122,7 +125,8 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
     function swap(uint256 tokenAAmount, uint256 tokenBAmount) external {
         require (tokenAAmount > 0 ? tokenBAmount == 0 : tokenBAmount > 0, "Swap failed.");
         if (tokenAAmount > 0) {
-            uint256 amountBGot = calculateTokenBEquivalent(tokenAAmount).mul(995).div(1000);
+            uint256 amountBEquivalent = calculateTokenBEquivalent(tokenAAmount);
+            uint256 amountBGot = amountBEquivalent - amountBEquivalent.mul(_feeNumerator).div(_feeDenominator);
             require(amountBGot < _reserveB, "Not enough reserves.");
             bool success = IERC20(_tokenA).transferFrom(address(msg.sender), address(this), tokenAAmount);
             require(success, "Swap failed.");
@@ -131,7 +135,8 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
             emit Swap(_tokenA, _tokenB, tokenAAmount, amountBGot);
         }
         if (tokenBAmount > 0) {
-            uint256 amountAGot = calculateTokenAEquivalent(tokenBAmount).mul(995).div(1000);
+            uint256 amountAEquivalent = calculateTokenAEquivalent(tokenBAmount);
+            uint256 amountAGot = amountAEquivalent - amountAEquivalent.mul(_feeNumerator).div(_feeDenominator);
             require(amountAGot < _reserveA, "Not enough reserves.");
             bool success = IERC20(_tokenB).transferFrom(address(msg.sender), address(this), tokenBAmount);
             require(success, "Swap failed.");
