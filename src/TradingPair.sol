@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import "src/LiadexLiquidityToken.sol";
 import "src/SafeMath.sol";
 import "src/ITradingPair.sol";
-import {IERC20} from "forge-std/src/interfaces/IERC20.sol";
+import {IERC20} from "forge-std/interfaces/IERC20.sol";
 
 /*
     This contract is automated-market-maker based liquidity pool that can be initialized via constructor
