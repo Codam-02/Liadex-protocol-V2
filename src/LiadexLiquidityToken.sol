@@ -12,7 +12,7 @@ import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 */
 contract LiadexLiquidityToken is ERC20 {
 
-    uint256 initializiationAmount = 10**3 * (10**decimals());
+    uint256 internal initializationAmount = 10**3 * (10**decimals());
 
     constructor() ERC20("Liadex Liquidity Token", "LLT") {}
 
