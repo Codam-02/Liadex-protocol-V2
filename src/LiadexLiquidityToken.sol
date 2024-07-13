@@ -11,6 +11,9 @@ import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
     implemented @openzeppelin and SafeMath libraries and the following code itself.
 */
 contract LiadexLiquidityToken is ERC20 {
+
+    uint256 initializiationAmount = 10**3 * (10**decimals());
+
     constructor() ERC20("Liadex Liquidity Token", "LLT") {}
 
     function mint(address to, uint256 amount) internal {
