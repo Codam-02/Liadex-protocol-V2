@@ -124,25 +124,30 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
     */
     function swap(uint256 tokenAAmount, uint256 tokenBAmount) external {
         require (tokenAAmount > 0 ? tokenBAmount == 0 : tokenBAmount > 0, "Swap failed.");
+        uint256 amountInWithFee;
+        uint256 newReserveOut;
+        uint256 amountOut;
         if (tokenAAmount > 0) {
-            uint256 amountBEquivalent = calculateTokenBEquivalent(tokenAAmount);
-            uint256 amountBGot = amountBEquivalent - amountBEquivalent.mul(_feeNumerator).div(_feeDenominator);
-            require(amountBGot < _reserveB, "Not enough reserves.");
+            amountInWithFee = tokenAAmount * (_feeDenominator - _feeNumerator) / _feeDenominator;
+            newReserveOut = _reserveA * _reserveB / (_reserveA + amountInWithFee);
+            amountOut = _reserveB - newReserveOut;
+            require(amountOut < _reserveB, "Not enough reserves.");
             bool success = IERC20(_tokenA).transferFrom(address(msg.sender), address(this), tokenAAmount);
             require(success, "Swap failed.");
-            IERC20(_tokenB).transfer(address(msg.sender), amountBGot);
+            IERC20(_tokenB).transfer(address(msg.sender), amountOut);
             sync();
-            emit Swap(_tokenA, _tokenB, tokenAAmount, amountBGot);
+            emit Swap(_tokenA, _tokenB, tokenAAmount, amountOut);
         }
         if (tokenBAmount > 0) {
-            uint256 amountAEquivalent = calculateTokenAEquivalent(tokenBAmount);
-            uint256 amountAGot = amountAEquivalent - amountAEquivalent.mul(_feeNumerator).div(_feeDenominator);
-            require(amountAGot < _reserveA, "Not enough reserves.");
+            amountInWithFee = tokenBAmount * (_feeDenominator - _feeNumerator) / _feeDenominator;
+            newReserveOut = _reserveA * _reserveB / (_reserveB + amountInWithFee);
+            amountOut = _reserveA - newReserveOut;
+            require(amountOut < _reserveA, "Not enough reserves.");
             bool success = IERC20(_tokenB).transferFrom(address(msg.sender), address(this), tokenBAmount);
             require(success, "Swap failed.");
-            IERC20(_tokenA).transfer(address(msg.sender), amountAGot);
+            IERC20(_tokenA).transfer(address(msg.sender), amountOut);
             sync();
-            emit Swap(_tokenB, _tokenA, tokenBAmount, amountAGot);
+            emit Swap(_tokenB, _tokenA, tokenBAmount, amountOut);
         }
     }
 
