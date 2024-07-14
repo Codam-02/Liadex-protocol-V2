@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
 
 /*
     This contract is an ERC20 token that lets any user swap their Ether for a "Wrapped Ether" ERC20 and
@@ -24,14 +25,14 @@ contract WrappedEther is ERC20 {
         _burn(from, amount);
     }
 
-    function wrap() public payable {
+    function wrap() public payable nonReentrant {
         require(msg.value > 0, "No Ether sent");
         
         mint(msg.sender, msg.value);
         emit Wrapped(msg.sender, msg.value);
     }
 
-    function unwrap(uint256 amount) external {
+    function unwrap(uint256 amount) external nonReentrant {
         require(amount > 0, "Amount must be greater than 0");
         require(balanceOf(msg.sender) >= amount, "Insufficient WETH balance");
 

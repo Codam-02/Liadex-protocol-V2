@@ -5,6 +5,7 @@ import "src/LiadexLiquidityToken.sol";
 import "src/SafeMath.sol";
 import "src/ITradingPair.sol";
 import {IERC20} from "forge-std/interfaces/IERC20.sol";
+import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
 
 /*
     This contract is automated-market-maker based liquidity pool that can be initialized via constructor
@@ -68,7 +69,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
         return (_reserveB.mul(amountA).div(_reserveA));
     }
 
-    function addLiquidity(uint256 amountA, uint256 amountB) external {
+    function addLiquidity(uint256 amountA, uint256 amountB) external nonReentrant {
         require (amountA > 0 && amountB > 0, "Deposit amounts can't be 0.");
 
         /*
@@ -97,7 +98,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
         sync();
     }
 
-    function withdraw(uint256 amountA, uint256 amountB) external {
+    function withdraw(uint256 amountA, uint256 amountB) external nonReentrant {
 
         require (amountA > 0 && amountB > 0, "Withdraw amounts can't be 0.");
 
@@ -122,7 +123,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
     amount greater than zero is the token that the user is giving to the pool. The function then calculates its
     value and sends to the user an amount of the other token that's of equal value as the token the user sent.
     */
-    function swap(uint256 tokenAAmount, uint256 tokenBAmount) external {
+    function swap(uint256 tokenAAmount, uint256 tokenBAmount) external nonReentrant {
         require (tokenAAmount > 0 ? tokenBAmount == 0 : tokenBAmount > 0, "Swap failed.");
         uint256 amountInWithFee;
         uint256 newReserveOut;
