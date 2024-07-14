@@ -79,7 +79,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair {
             IERC20(_tokenA).transferFrom(address(msg.sender), address(this), amountA);
             IERC20(_tokenB).transferFrom(address(msg.sender), address(this), amountB);
 
-            mint(address(msg.sender), 1000*(10**decimals()));
+            mint(address(msg.sender), initializationAmount);
         }
 
         else {
