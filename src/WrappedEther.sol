@@ -11,7 +11,7 @@ import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
     Anyone intending to use this code should first make sure they understand the implemented 
     @openzeppelin libraries and the following code itself.
 */
-contract WrappedEther is ERC20 {
+contract WrappedEther is ERC20, ReentrancyGuard {
     constructor() ERC20("Sepolia Wrapped Ether", "WETH") {}
 
     event Wrapped(address indexed user, uint256 amount);

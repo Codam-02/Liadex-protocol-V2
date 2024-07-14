@@ -12,7 +12,7 @@ import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
     one of the two ERC20s for the other. Anyone intending to use this code should first make sure they
     understand the implemented contracts, interfaces and libraries and the following code itself.
 */
-contract TradingPair is LiadexLiquidityToken, ITradingPair {
+contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
 
     event Swap(address tokenSwapped, address tokenObtained, uint256 amountSwapped, uint256 amountObtained);
     event LiquidityAddded(uint256 amountA, uint256 amountB);
