@@ -7,20 +7,13 @@ import {LiadexERC20} from "../src/LiadexERC20.sol";
 import {WrappedEther} from "../src/WrappedEther.sol";
 
 contract CounterTest is Test {
-    Counter public counter;
+    TradingPair public tp;
 
     function setUp() public {
-        counter = new Counter();
-        counter.setNumber(0);
+        LiadexERC20 ldx = new LiadexERC20();
+        WrappedEther weth = new WrappedEther();
+
+        tp = new TradingPair(ldx.address, weth.address);
     }
 
-    function test_Increment() public {
-        counter.increment();
-        assertEq(counter.number(), 1);
-    }
-
-    function testFuzz_SetNumber(uint256 x) public {
-        counter.setNumber(x);
-        assertEq(counter.number(), x);
-    }
 }
