@@ -2,7 +2,9 @@
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
-import {Counter} from "../src/Counter.sol";
+import {TradingPair} from "../src/TradingPair.sol";
+import {LiadexERC20} from "../src/LiadexERC20.sol";
+import {WrappedEther} from "../src/WrappedEther.sol";
 
 contract CounterTest is Test {
     Counter public counter;
