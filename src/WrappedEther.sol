@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
-import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
+import {nonReentrant} from "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
 
 /*
     This contract is an ERC20 token that lets any user swap their Ether for a "Wrapped Ether" ERC20 and
