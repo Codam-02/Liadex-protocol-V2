@@ -13,7 +13,7 @@ contract CounterTest is Test {
         LiadexERC20 ldx = new LiadexERC20();
         WrappedEther weth = new WrappedEther();
 
-        tp = new TradingPair(ldx.address, weth.address);
+        tp = new TradingPair(address(ldx), address(weth));
     }
 
 }
