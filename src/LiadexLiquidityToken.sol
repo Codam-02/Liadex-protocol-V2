@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "src/SafeMath.sol";
-import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 /*
     This contract is an ERC20 token that's been deployed and used as liquidity token for a decentralized
