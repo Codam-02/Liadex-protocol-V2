@@ -80,6 +80,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
             IERC20(_tokenB).transferFrom(address(msg.sender), address(this), amountB);
 
             mint(address(msg.sender), initializationAmount);
+            emit LiquidityAddded(amountA, amountB);
         }
 
         else {
