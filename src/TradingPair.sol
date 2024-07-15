@@ -15,7 +15,7 @@ import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
 contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
 
     event Swap(address tokenSwapped, address tokenObtained, uint256 amountSwapped, uint256 amountObtained);
-    event LiquidityAddded(uint256 amountA, uint256 amountB);
+    event LiquidityAdded(uint256 amountA, uint256 amountB);
     event LiquidityWithdrawn(uint256 amountA, uint256 amountB);
 
     using SafeMath for uint256;
@@ -80,7 +80,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
             IERC20(_tokenB).transferFrom(address(msg.sender), address(this), amountB);
 
             mint(address(msg.sender), initializationAmount);
-            emit LiquidityAddded(amountA, amountB);
+            emit LiquidityAdded(amountA, amountB);
         }
 
         else {
@@ -92,7 +92,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
             IERC20(_tokenB).transferFrom(address(msg.sender), address(this), amountB);
             uint256 liquidityTokenToMint = amountA.mul(totalSupply()).div(_reserveA);
             mint(address(msg.sender), liquidityTokenToMint);
-            emit LiquidityAddded(amountA, amountB);
+            emit LiquidityAdded(amountA, amountB);
         }
 
         sync();
