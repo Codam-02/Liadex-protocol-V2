@@ -41,8 +41,11 @@ contract TradingPairTest is Test {
     }
 
     function test_addLiquidity_FirstProvision() public {
-        hoax(signer1, 100e18);
+        startHoax(signer1, 100e18);
+        vm.expectEmit(address(tp));
+        emit TradingPair.LiquidityAdded(1000, 1000);
         tp.addLiquidity(1000, 1000);
+        vm.stopPrank();
         (uint256 reserveA, uint256 reserveB) = tp.getReserves();
         assertEq(reserveA, 1000);
         assertEq(reserveB, 1000);
