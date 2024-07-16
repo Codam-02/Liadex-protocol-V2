@@ -162,4 +162,21 @@ contract TradingPairTest is Test {
         assertApproxEqAbs(newWethBalance - oldWethBalance, oldLdxBalance - newLdxBalance, 5e14);
     }
 
+    function test_swap_k() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(10e18, 10e18);
+        uint256 swapAmount = 5e16;
+        uint256 oldK = tp.getK();
+        uint256 expectedLdxRecieved = 49503718997985025;
+
+        vm.expectEmit(address(tp));
+        emit TradingPair.Swap(address(weth), address(ldx), swapAmount, expectedLdxRecieved);
+
+        tp.swap(swapAmount, 0);
+        vm.stopPrank();
+
+        uint256 newK = tp.getK();
+        assertGe(newK, oldK);
+    }
+
 }
