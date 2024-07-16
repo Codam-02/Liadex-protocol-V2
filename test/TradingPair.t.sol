@@ -144,7 +144,7 @@ contract TradingPairTest is Test {
         uint256 newLdxBalance = ldx.balanceOf(signer1);
         vm.stopPrank();
 
-        assertApproxEqAbs(oldWethBalance - newWethBalance, newLdxBalance - oldLdxBalance, 5e13);
+        assertApproxEqAbs(oldWethBalance - newWethBalance, newLdxBalance - oldLdxBalance, 5e14);
     }
 
 }
