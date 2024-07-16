@@ -147,4 +147,19 @@ contract TradingPairTest is Test {
         assertApproxEqAbs(oldWethBalance - newWethBalance, newLdxBalance - oldLdxBalance, 5e14);
     }
 
+    function test_swap_BalancesBA() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(10e18, 10e18);
+        uint256 swapAmount = 5e16;
+        uint256 oldWethBalance = weth.balanceOf(signer1);
+        uint256 oldLdxBalance = ldx.balanceOf(signer1);
+
+        tp.swap(0, swapAmount);
+        uint256 newWethBalance = weth.balanceOf(signer1);
+        uint256 newLdxBalance = ldx.balanceOf(signer1);
+        vm.stopPrank();
+
+        assertApproxEqAbs(newWethBalance - oldWethBalance, oldLdxBalance - newLdxBalance, 5e14);
+    }
+
 }
