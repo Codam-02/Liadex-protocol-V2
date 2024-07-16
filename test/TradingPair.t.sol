@@ -83,4 +83,19 @@ contract TradingPairTest is Test {
         vm.stopPrank();
     }
 
+    function test_withdraw_Balances() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(1000, 1000);
+
+        vm.expectEmit(address(tp));
+        emit TradingPair.LiquidityWithdrawn(500, 500);
+        tp.withdraw(500, 500);
+
+        (uint256 reserveA, uint256 reserveB) = tp.getReserves();
+        assertEq(reserveA, 500);
+        assertEq(reserveB, 500);
+
+        assertEq(tp.balanceOf(signer1), 500e18);
+    }
+
 }
