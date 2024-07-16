@@ -98,4 +98,12 @@ contract TradingPairTest is Test {
         assertEq(tp.balanceOf(signer1), 500e18);
     }
 
+    function test_withdraw_ExceedingAmount() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(1000, 1000);
+
+        vm.expectRevert("User doesn't own enough liquidity pool funds.");
+        tp.withdraw(1001, 1001);
+    }
+
 }
