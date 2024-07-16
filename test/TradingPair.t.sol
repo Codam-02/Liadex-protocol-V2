@@ -83,6 +83,18 @@ contract TradingPairTest is Test {
         vm.stopPrank();
     }
 
+    function test_addLiquidity_K() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(1000, 1000);
+
+        uint256 oldK = tp.getK();
+
+        tp.addLiquidity(10000, 10000);
+        uint256 newK = tp.getK();
+
+        assertGe(newK, oldK);
+    }
+
     function test_withdraw_Balances() public {
         startHoax(signer1, 100e18);
         tp.addLiquidity(1000, 1000);
