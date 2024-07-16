@@ -42,6 +42,8 @@ contract TradingPairTest is Test {
         assertEq(tokenB, address(ldx));
     }
 
+    //---------------------------------
+
     function test_addLiquidity_FirstProvision() public {
         startHoax(signer1, 100e18);
         vm.expectEmit(address(tp));
