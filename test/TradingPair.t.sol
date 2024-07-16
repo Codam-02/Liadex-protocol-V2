@@ -111,4 +111,17 @@ contract TradingPairTest is Test {
         tp.withdraw(1001, 1001);
     }
 
+    function test_withdraw_K() public {
+        startHoax(signer1, 100e18);
+        tp.addLiquidity(1000, 1000);
+
+        uint256 oldK = tp.getK();
+
+        tp.withdraw(700, 700);
+
+        uint256 newK = tp.getK();
+
+        assertGe(oldK, newK);
+    }
+
 }
