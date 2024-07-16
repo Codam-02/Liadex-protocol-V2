@@ -66,17 +66,10 @@ contract TradingPairTest is Test {
 
     function test_addLiquidity_LiquidityToken() public {
         startHoax(signer1, 10e18);
-        /*
-        vm.expectEmit(address(tp));
-        emit TradingPair.Transfer(address(0), signer1, 1000e18);
-        */
+
         tp.addLiquidity(1000, 1000);
         assertEq(tp.balanceOf(signer1), 1000e18);
 
-        /*
-        vm.expectEmit(address(tp));
-        emit TradingPair.Transfer(address(0), signer1, 10000e18);
-        */
         tp.addLiquidity(10000, 10000);
         assertEq(tp.balanceOf(signer1), 11000e18);
 
