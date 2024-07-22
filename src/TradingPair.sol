@@ -10,7 +10,7 @@ import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
     This contract is automated-market-maker based liquidity pool that can be initialized via constructor
     on any two distinct ERC20-token contracts and lets users add liquidity to the pool, remove it, or swap
     one of the two ERC20s for the other. Anyone intending to use this code should first make sure they
-    understand the implemented contracts, interfaces and libraries and the following code itself.
+    understand all implemented contracts, interfaces and libraries and the following code itself.
 */
 contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
 
@@ -58,16 +58,10 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
         return (IERC20(_tokenA).balanceOf(address(this)), IERC20(_tokenB).balanceOf(address(this)));
     }
 
-    // given an amount of tokenB, this function returns its equivalent in tokenA
-    function calculateTokenAEquivalent(uint256 amountB) public view returns (uint256) {
-        return (_reserveA.mul(amountB).div(_reserveB));
-    }
-
-    // given an amount of tokenA, this function returns its equivalent in tokenB
-    function calculateTokenBEquivalent(uint256 amountA) public view returns (uint256) {
-        return (_reserveB.mul(amountA).div(_reserveA));
-    }
-
+    /*
+    The following function lets users provide liquidity to the trading-pair-related liquidity pool,
+    the token amount arguments have to be of equal value for the liquidity provision to be successful
+    */
     function addLiquidity(uint256 amountA, uint256 amountB) external nonReentrant {
         require (amountA > 0 && amountB > 0, "Deposit amounts can't be 0.");
 
@@ -84,8 +78,7 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
         }
 
         else {
-
-            bool equalValue = calculateTokenAEquivalent(amountB) == amountA || calculateTokenBEquivalent(amountA) == amountB;
+            bool equalValue = amountA * _reserveB / _reserveA == amountB;
             require(equalValue, "Token amounts provided are not of equal value."); //require that token amounts are of the same value
             
             IERC20(_tokenA).transferFrom(address(msg.sender), address(this), amountA);
@@ -98,11 +91,15 @@ contract TradingPair is LiadexLiquidityToken, ITradingPair, ReentrancyGuard {
         sync();
     }
 
+    /*
+    The following function lets users withdraw liquidity from the trading-pair-related liquidity pool,
+    the token amount arguments have to be of equal value for the liquidity withdrawal to be successful
+    */
     function withdraw(uint256 amountA, uint256 amountB) external nonReentrant {
 
         require (amountA > 0 && amountB > 0, "Withdraw amounts can't be 0.");
 
-        bool equalValue = calculateTokenAEquivalent(amountB) == amountA || calculateTokenBEquivalent(amountA) == amountB;
+        bool equalValue = amountA * _reserveB / _reserveA == amountB;
         require(equalValue, "Token withdraw amounts are not of equal value."); //require that token amounts are of the same value
 
         uint256 liquidityTokenToBurn = amountA.mul(totalSupply()).div(_reserveA);

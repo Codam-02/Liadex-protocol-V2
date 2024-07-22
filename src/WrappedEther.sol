@@ -7,7 +7,7 @@ import "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
 
 /*
     This contract is an ERC20 token that lets any user swap their Ether for a "Wrapped Ether" ERC20 and
-    viceversa. The string inputs in the ERC20 constructor stand as the name and the symbol for the ERC20 token.
+    'unwrap' their ERC20 to get Ether back. The string inputs in the ERC20 constructor stand as the name and the symbol for the ERC20 token.
     Anyone intending to use this code should first make sure they understand the implemented 
     @openzeppelin libraries and the following code itself.
 */
