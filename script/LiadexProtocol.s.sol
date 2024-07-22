@@ -13,7 +13,16 @@ contract LiadexProtocol is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         console.log("Deploying weth contract...");
-        WrappedEther = new WrappedEther();
+        WrappedEther weth = new WrappedEther();
+        console.log("Weth deployed at: ", address(weth));
+
+        console.log("Deploying ldx contract...");
+        LiadexERC20 ldx = new LiadexERC20();
+        console.log("Ldx deployed at: ", address(ldx));
+
+        console.log("Deploying trading pair contract...");
+        TradingPair tp = new TradingPair(address(weth), address(ldx));
+        console.log("Trading pair deployed at: ", address(tp));
 
         vm.stopBroadcast();
     }
